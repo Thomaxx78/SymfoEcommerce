@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-detail {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .product-header {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .product-category {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin: 1rem 0;
+        }
+        .product-description {
+            color: #6c757d;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        .product-meta {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        .product-meta-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .product-meta-item:last-child {
+            margin-bottom: 0;
+        }
+        .product-meta-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            min-width: 120px;
+        }
+        .product-meta-value {
+            color: #6c757d;
+        }
+        .btn-back {
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .btn-back:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <a href="{{ path('app_products') }}" class="btn btn-outline-primary btn-back">
+            <i class="fas fa-arrow-left"></i> Retour aux produits
+        </a>
+
+        <div class="product-detail">
+            <div class="product-header">
+                <span class="product-category">{{ product.category }}</span>
+                <h1 class="section-title">{{ product.name }}</h1>
+                <div class="product-price">{{ product.points }} points</div>
+            </div>
+            
+            <div class="p-4">
+                <div class="product-description">
+                    {{ product.description }}
+                </div>
+
+                <div class="product-meta">
+                    <div class="product-meta-item">
+                        <span class="product-meta-label">Catégorie</span>
+                        <span class="product-meta-value">{{ product.category }}</span>
+                    </div>
+                    <div class="product-meta-item">
+                        <span class="product-meta-label">Points requis</span>
+                        <span class="product-meta-value">{{ product.points }} points</span>
+                    </div>
+                    <div class="product-meta-item">
+                        <span class="product-meta-label">Ajouté par</span>
+                        <span class="product-meta-value">{{ product.createdBy.name }} {{ product.createdBy.firstName }}</span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    {% if app.user %}
+                        {% if app.user.isActive() %}
+                            <form action="{{ path('app_purchase_product', {'id': product.id}) }}" method="post" class="mt-3">
+                                <input type="hidden" name="_token" value="{{ csrf_token('purchase' ~ product.id) }}">
+                                <button type="submit" class="btn btn-primary" style="background-color: var(--secondary-color); border-color: var(--secondary-color);">
+                                    Acheter pour {{ product.points }} points
+                                </button>
+                            </form>
+                        {% else %}
+                            <div class="alert alert-warning mt-3">
+                                Votre compte est désactivé. Vous ne pouvez pas acheter de produits.
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted">Connectez-vous pour acheter ce produit</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %} 

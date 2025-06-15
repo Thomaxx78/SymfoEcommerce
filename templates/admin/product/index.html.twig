@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des produits{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h1 class="h3 mb-0">Gestion des produits</h1>
+                        <a href="{{ path('app_admin_product_new') }}" class="btn btn-primary">Ajouter un produit</a>
+                    </div>
+                    <div class="card-body">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Points</th>
+                                        <th>Créé par</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                        <tr>
+                                            <td>{{ product.id }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.description|slice(0, 50) }}...</td>
+                                            <td>{{ product.points }}</td>
+                                            <td>{{ product.createdBy ? product.createdBy.email : 'N/A' }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ path('app_admin_product_edit', {'id': product.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                                                    <form action="{{ path('app_admin_product_delete', {'id': product.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 
