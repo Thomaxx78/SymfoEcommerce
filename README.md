@@ -27,8 +27,8 @@ FauxPrix est une plateforme e-commerce moderne développée avec Symfony, offran
 
 1. **Cloner le repository**
    ```bash
-   git clone [URL_DU_REPO]
-   cd ecommerce_symfony
+   git clone git@github.com:Thomaxx78/SymfoEcommerce.git
+   cd SymfoEcommerce
    ```
 
 2. **Installer les dépendances**
@@ -38,8 +38,7 @@ FauxPrix est une plateforme e-commerce moderne développée avec Symfony, offran
 
 3. **Configurer la base de données**
    - Créer une base de données MySQL
-   - Copier le fichier `.env` en `.env.local`
-   - Modifier les variables d'environnement dans `.env.local` :
+   - Modifier les variables d'environnement dans `.env` :
      ```env
      DATABASE_URL="mysql://user:password@127.0.0.1:3306/symfony_eco?serverVersion=8.0"
      ```
@@ -63,7 +62,7 @@ FauxPrix est une plateforme e-commerce moderne développée avec Symfony, offran
    ```
 
 2. **Accéder à l'application**
-   Ouvrez votre navigateur et accédez à `http://localhost:8000`
+   Ouvrez votre navigateur et accédez à `http://localhost`
 
 ## 👥 Comptes de test
 
